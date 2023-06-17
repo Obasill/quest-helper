@@ -78,7 +78,7 @@ public class HeroesQuest extends BasicQuestHelper
 		gripsKey, fireFeather;
 
 	//Items Recommended
-	ItemRequirement combatGear, antifireShield, varrockTeleport;
+	ItemRequirement combatGear, antifireShield, varrockTeleport, glory;
 
 	Requirement inTaverleyDungeon, has70Agility, inDeepTaverleyDungeon,
 		talkedToKatrine, talkedToStraven, inJailCell, inBlackArmGang, inPhoenixBase, talkedToAlfonse, blackArmGangDoorUnlocked, gottenPapers,
@@ -217,6 +217,7 @@ public class HeroesQuest extends BasicQuestHelper
 		oilRod = new ItemRequirement("Oily fishing rod", ItemID.OILY_FISHING_ROD).isNotConsumed();
 		lavaEel = new ItemRequirement("Lava eel", ItemID.LAVA_EEL);
 		rawLavaEel = new ItemRequirement("Raw lava eel", ItemID.RAW_LAVA_EEL);
+		glory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES);
 
 		thievesArmband = new ItemRequirement("Thieves' armband", ItemID.THIEVES_ARMBAND);
 
