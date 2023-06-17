@@ -348,7 +348,7 @@ public class LumbridgeHard extends ComplexStateQuestHelper
 		List<Requirement> reqs = new ArrayList<>();
 		reqs.add(new SkillRequirement(Skill.AGILITY, 46));
 		reqs.add(new SkillRequirement(Skill.CRAFTING, 70, true));
-		reqs.add(new SkillRequirement(Skill.FARMING, 63));
+		reqs.add(new SkillRequirement(Skill.FARMING, 63, true));
 		reqs.add(new SkillRequirement(Skill.FIREMAKING, 65));
 		reqs.add(new SkillRequirement(Skill.MAGIC, 60));
 		reqs.add(new SkillRequirement(Skill.PRAYER, 52));
