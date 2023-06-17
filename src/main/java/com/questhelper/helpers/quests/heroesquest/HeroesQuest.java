@@ -466,6 +466,7 @@ public class HeroesQuest extends BasicQuestHelper
 		reqs.add(combatGear);
 		reqs.add(varrockTeleport);
 		reqs.add(antifireShield);
+		reqs.add(glory);
 
 		return reqs;
 	}
