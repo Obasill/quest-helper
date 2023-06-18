@@ -70,7 +70,7 @@ import net.runelite.api.widgets.WidgetInfo;
 public class HolyGrail extends BasicQuestHelper
 {
 	//Items Recommended
-	ItemRequirement antipoison, combatGear, food, threeCamelotTele, ardyTele, faladorTele, sixtyCoins;
+	ItemRequirement antipoison, combatGear, food, threeCamelotTele, ardyTele, faladorTele, sixtyCoins, glory;
 
 	//Items Required
 	ItemRequirement excalibur, holyTableNapkin, twoMagicWhistles, highlightMagicWhistle1, goldFeather, grailBell, highlightGrailBell, emptyInvSpot, oneMagicWhistle, highlightMagicWhistle2, grail;
@@ -172,6 +172,7 @@ public class HolyGrail extends BasicQuestHelper
 		grailBell = new ItemRequirement("Grail Bell", ItemID.GRAIL_BELL);
 		oneMagicWhistle = new ItemRequirement("Magic Whistle", ItemID.MAGIC_WHISTLE);
 		grail = new ItemRequirement("Holy Grail", ItemID.HOLY_GRAIL);
+		glory = new ItemRequirement("Amulet of Glory", ItemCollections.AMULET_OF_GLORIES);
 
 		highlightMagicWhistle1 = new ItemRequirement("Magic Whistle", ItemID.MAGIC_WHISTLE, 2);
 		highlightMagicWhistle1.setHighlightInInventory(true);
@@ -329,6 +330,7 @@ public class HolyGrail extends BasicQuestHelper
 		reqs.add(antipoison);
 		reqs.add(food);
 		reqs.add(combatGear);
+		reqs.add(glory);
 		return reqs;
 	}
 
