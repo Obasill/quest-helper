@@ -28,11 +28,14 @@ import com.questhelper.ItemCollections;
 import com.questhelper.QuestHelperQuest;
 import com.questhelper.Zone;
 import com.questhelper.questhelpers.ComplexStateQuestHelper;
+import com.questhelper.requirements.ComplexRequirement;
 import com.questhelper.requirements.Requirement;
 import com.questhelper.requirements.ZoneRequirement;
+import com.questhelper.requirements.conditional.Conditions;
 import com.questhelper.requirements.player.SkillRequirement;
 import com.questhelper.requirements.player.SpellbookRequirement;
 import com.questhelper.requirements.quest.QuestRequirement;
+import com.questhelper.requirements.util.LogicType;
 import com.questhelper.requirements.util.Spellbook;
 import com.questhelper.requirements.var.VarplayerRequirement;
 import com.questhelper.rewards.ItemReward;
@@ -55,7 +58,7 @@ import com.questhelper.panel.PanelDetails;
 public class FremennikHard extends ComplexStateQuestHelper
 {
 	// Items required
-	ItemRequirement bronzeNail, rope, lawRune, lawRune2, astralRune, waterRune, fireRune, teasingStick, knife, axe,
+	ItemRequirement bronzeNail, rope, lawRune, lawRune1, lawRune2, lawRune3, astralRune, waterRune, fireRune, teasingStick, knife, axe,
 		pickaxe, hammer, arcticLog, whiteBerries, log, cadantineUnfPot, rake;
 
 	Requirement notTPTroll, notCatchKyatt, notMixSuperDef, notStealGem, notCraftShield, notMineAddy, notMiscSupport,
@@ -64,7 +67,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 	// Quest requirements
 	Requirement giantDwarf, fremIsles, throneOfMisc, eadgarsRuse, lunarDiplomacy;
 
-	Requirement normalBook, lunarBook;
+	Requirement normalBook, lunarBook, lawBoth;
 
 	// Steps
 	QuestStep tpTroll, catchKyatt, mixSuperDef, stealGem, craftShield, mineAddy, tpWaterbirth, freeBlast,
@@ -148,12 +151,18 @@ public class FremennikHard extends ComplexStateQuestHelper
 		notMiscSupport = new VarplayerRequirement(1184, false, 28);
 		notTPWaterbirth = new VarplayerRequirement(1184, false, 29);
 		notFreeBlast = new VarplayerRequirement(1184, false, 30);
+		lawBoth = new ComplexRequirement(LogicType.AND, "Law runes", notTPTroll, notTPWaterbirth);
 
 		pickaxe = new ItemRequirement("Any pickaxe", ItemCollections.PICKAXES).showConditioned(notMineAddy).isNotConsumed();
 		bronzeNail = new ItemRequirement("Bronze nails", ItemID.BRONZE_NAILS).showConditioned(notCraftShield);
 		rope = new ItemRequirement("Rope", ItemID.ROPE).showConditioned(notCraftShield).isNotConsumed();
-		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPTroll);
-		lawRune2 = new ItemRequirement("Law rune", ItemID.LAW_RUNE).showConditioned(notTPWaterbirth);
+
+		lawRune1 = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 1)
+			.showConditioned(new Conditions(notTPWaterbirth, new Conditions(LogicType.NOR, lawBoth)));
+		lawRune2 = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 2)
+			.showConditioned(new Conditions(notTPTroll, new Conditions(LogicType.NOR, lawBoth)));
+		lawRune3 = new ItemRequirement("Law runes", ItemID.LAW_RUNE, 3).showConditioned(lawBoth);
+		lawRune = new ItemRequirement("Law rune", ItemID.LAW_RUNE);
 		astralRune = new ItemRequirement("Astral rune", ItemID.ASTRAL_RUNE).showConditioned(notTPWaterbirth);
 		waterRune = new ItemRequirement("Water rune", ItemID.WATER_RUNE).showConditioned(notTPWaterbirth);
 		fireRune = new ItemRequirement("Fire rune", ItemID.FIRE_RUNE).showConditioned(notTPTroll);
@@ -207,7 +216,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 	public void setupSteps()
 	{
 		tpTroll = new DetailedQuestStep(this,
-			"Teleport to Trollheim.", lawRune.quantity(2), fireRune.quantity(2), normalBook);
+			"Teleport to Trollheim.", lawRune2, fireRune.quantity(2), normalBook);
 		catchKyatt = new NpcStep(this, NpcID.SABRETOOTHED_KYATT, new WorldPoint(2725, 3770, 0),
 			"Place logs over a pit in the hunter area, and poke a kyatt with a teasing stick. " +
 				"Jump over the pits until the kyatt falls in and loot it.", teasingStick, log, knife);
@@ -254,7 +263,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 			"Rake the herb and flax patch until 100% support.", true, rake);
 		miscSupport.addAlternateObjects(15079);
 		tpWaterbirth = new DetailedQuestStep(this,
-			"Teleport to Waterbirth.", waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1), lunarBook);
+			"Teleport to Waterbirth.", waterRune.quantity(1), astralRune.quantity(2), lawRune1, lunarBook);
 		moveToBlast = new ObjectStep(this, ObjectID.STAIRS_9084, new WorldPoint(2930, 10197, 0),
 			"Enter the blast furnace.");
 		freeBlast = new NpcStep(this, NpcID.BLAST_FURNACE_FOREMAN, new WorldPoint(1942, 4958, 0),
@@ -270,7 +279,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 	public List<ItemRequirement> getItemRequirements()
 	{
 		return Arrays.asList(rake, pickaxe, axe, arcticLog.quantity(2), hammer, rope, bronzeNail,
-			cadantineUnfPot, whiteBerries, teasingStick, log, knife, fireRune.quantity(2), lawRune.quantity(3),
+			cadantineUnfPot, whiteBerries, teasingStick, log, knife, fireRune.quantity(2), lawRune1, lawRune2, lawRune3,
 			astralRune.quantity(2), waterRune.quantity(1));
 	}
 
@@ -373,7 +382,7 @@ public class FremennikHard extends ComplexStateQuestHelper
 		allSteps.add(teleportToTrollheimSteps);
 
 		PanelDetails teleportToWaterbirthSteps = new PanelDetails("Teleport to Waterbirth", Collections.singletonList(tpWaterbirth),
-			lunarDiplomacy, new SkillRequirement(Skill.MAGIC, 72), lunarBook, waterRune.quantity(1), astralRune.quantity(2), lawRune2.quantity(1));
+			lunarDiplomacy, new SkillRequirement(Skill.MAGIC, 72), lunarBook, waterRune.quantity(1), astralRune.quantity(2), lawRune.quantity(1));
 		teleportToWaterbirthSteps.setDisplayCondition(notTPWaterbirth);
 		teleportToWaterbirthSteps.setLockingStep(tpWaterbirthTask);
 		allSteps.add(teleportToWaterbirthSteps);
