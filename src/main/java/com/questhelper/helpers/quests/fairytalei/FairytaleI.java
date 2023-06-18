@@ -255,7 +255,8 @@ public class FairytaleI extends BasicQuestHelper
 		talkToZandar.addSubSteps(climbTowerF1ToF2, climbTowerF0ToF1);
 
 		talkToMortifer = new NpcStep(this, NpcID.MALIGNIUS_MORTIFER, new WorldPoint(2991, 3270, 0),
-			"Talk to Malignius Mortifer west of Port Sarim.", draynorSkull);
+			"Talk to Malignius Mortifer west of Port Sarim. \n\n Take note of the items he requests. " +
+				"If you forget, check your quest log to see what items you need to bring.", draynorSkull);
 		talkToMortifer.addDialogSteps("I need help with fighting a Tanglefoot.",
 			"I was asking you about fighting a Tanglefoot...");
 		getSkull = new DigStep(this, new WorldPoint(3106, 3383, 0), "Dig for a skull in the north of Draynor Manor.");
